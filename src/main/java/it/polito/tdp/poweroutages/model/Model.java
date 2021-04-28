@@ -42,7 +42,7 @@ public class Model {
 			return;
 		}
 		
-		if(parziale.size()>0 && (livello==100 || (sommaOre+powerList.get(indice).getHours())>maxOre || 
+		if(parziale.size()>0 && (livello==powerList.size() || (sommaOre+powerList.get(indice).getHours())>maxOre || 
 				(parziale.get(0).getYear()-powerList.get(indice).getYear())>maxAnni)) {
 				
 			if(sommaClienti>sommaClientiMigliore) {
