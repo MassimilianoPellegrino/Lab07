@@ -33,31 +33,34 @@ public class Model {
 	
 	public void itera(int livello, int indice, List<PowerOutage> parziale, List<PowerOutage> powerList, int sommaClienti, int maxOre, double sommaOre, int maxAnni) {
 		
-		if(parziale.size()>0 && (livello==powerList.size() || (sommaOre+powerList.get(indice).getHours())>maxOre || 
-				(parziale.get(0).getYear()-powerList.get(indice).getYear())>maxAnni)) {
+		if(parziale.size()>0 && (livello==powerList.size() || (sommaOre+powerList.get(indice-1).getHours())>maxOre || 
+				(parziale.get(0).getYear()-powerList.get(indice-1).getYear())>maxAnni)) {
 				
 			if(sommaClienti>sommaClientiMigliore) {
 				sommaClientiMigliore=sommaClienti;
 				soluzioneMigliore = new ArrayList<>(parziale);
 				return;
 			}
+			return;
 			
 		}
 		
-		
-		if(indice<powerList.size()) {
-			
-			parziale.add(powerList.get(indice));
-			
-			itera(livello, indice+1, parziale, powerList, sommaClienti+powerList.get(indice).getCustomers_affected(), maxOre, 
-					sommaOre+powerList.get(indice).getHours(), maxAnni);
-			
-			parziale.remove(powerList.get(indice));
-		
-		}else{
-			
+		if(indice==powerList.size())
 			itera(livello+1, livello+1, new ArrayList<PowerOutage>(), powerList, 0, maxOre, 0, maxAnni);
-		}
+		
+		for(int i = indice; i<powerList.size(); i++) {
+			
+			parziale.add(powerList.get(i));
+			
+			itera(livello, i+1, parziale, powerList, sommaClienti+powerList.get(i).getCustomers_affected(), maxOre, 
+					sommaOre+powerList.get(i).getHours(), maxAnni);
+			
+			parziale.remove(powerList.get(i));
+		
+		}	
+		
+		
+		
 		
 	}
 	
