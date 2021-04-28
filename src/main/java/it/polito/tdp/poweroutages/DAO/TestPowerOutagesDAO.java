@@ -5,7 +5,7 @@ import java.sql.Connection;
 import it.polito.tdp.poweroutages.model.PowerOutage;
 
 public class TestPowerOutagesDAO {
-
+ 
 	public static void main(String[] args) {
 		
 		try {

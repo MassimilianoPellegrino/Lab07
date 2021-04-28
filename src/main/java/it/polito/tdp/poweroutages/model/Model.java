@@ -42,20 +42,18 @@ public class Model {
 			return;
 		}
 		
-		if(parziale.size()>0 && (livello==powerList.size() || (sommaOre+powerList.get(indice).getHours())>maxOre || 
-				(parziale.get(0).getYear()-powerList.get(indice).getYear())>maxAnni)) {
+		if(parziale.size()>0 && (livello==powerList.size() || sommaOre>maxOre || 
+				(parziale.get(0).getYear()-powerList.get(indice).getYear())>maxAnni/* || indice==powerList.size()*/)) {
 				
-			if(sommaClienti>sommaClientiMigliore) {
-				sommaClientiMigliore=sommaClienti;
-				soluzioneMigliore = new ArrayList<>(parziale);
-				
-				//System.out.println(soluzioneMigliore.get(soluzioneMigliore.size()-1));
-				
-				return;
-			}
-			
 			return;
 			
+		}else if(sommaClienti>sommaClientiMigliore) {
+			sommaClientiMigliore=sommaClienti;
+			soluzioneMigliore = new ArrayList<>(parziale);
+			
+			//System.out.println(soluzioneMigliore.get(soluzioneMigliore.size()-1));
+			
+			return;
 		}
 		
 		for(int i=indice; i<powerList.size(); i++) {
@@ -68,6 +66,20 @@ public class Model {
 			parziale.remove(powerList.get(i));
 		
 		}
+		
+		/*for(int j=livello; j<powerList.size(); j++) {
+			
+			for(int i=j; i<powerList.size(); i++) {
+				
+				parziale.add(powerList.get(i));
+				
+				itera(j, i+1, parziale, powerList, sommaClienti+powerList.get(i).getCustomers_affected(), maxOre, 
+						sommaOre+powerList.get(i).getHours(), maxAnni);
+				
+				parziale.remove(powerList.get(i));
+			
+			}
+		}*/
 	
 	
 	}	
