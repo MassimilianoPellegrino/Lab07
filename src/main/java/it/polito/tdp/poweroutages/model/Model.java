@@ -1,6 +1,7 @@
 package it.polito.tdp.poweroutages.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.polito.tdp.poweroutages.DAO.PowerOutageDAO;
@@ -10,6 +11,7 @@ public class Model {
 	PowerOutageDAO podao;
 	int sommaClientiMigliore;
 	List<PowerOutage> soluzioneMigliore;
+	List<PowerOutage> powerList;
 	
 	public Model() {
 		podao = new PowerOutageDAO();
@@ -26,42 +28,69 @@ public class Model {
 	public List<PowerOutage> trovaSequenza(int nerc_id, int maxOre, int maxAnni){
 		
 		sommaClientiMigliore = 0;
-		itera(0, 0, new ArrayList<PowerOutage>(), this.getPowerList(nerc_id), 0, maxOre, 0, maxAnni);
+		powerList = this.getPowerList(nerc_id);
+
+		itera(0, new ArrayList<PowerOutage>(), maxOre, maxAnni);
 		
 		return soluzioneMigliore;
 	}
 	
-	public void itera(int livello, int indice, List<PowerOutage> parziale, List<PowerOutage> powerList, int sommaClienti, int maxOre, double sommaOre, int maxAnni) {
+	public void itera(int livello, List<PowerOutage> parziale, int maxOre, int maxAnni) {
 		
-		if(parziale.size()>0 && (livello==powerList.size() || (sommaOre+powerList.get(indice-1).getHours())>maxOre || 
-				(parziale.get(0).getYear()-powerList.get(indice-1).getYear())>maxAnni)) {
-				
-			if(sommaClienti>sommaClientiMigliore) {
-				sommaClientiMigliore=sommaClienti;
-				soluzioneMigliore = new ArrayList<>(parziale);
-				return;
-			}
+		System.out.println(livello+"	"+parziale.size());
+		
+		double ore = sommaOre(parziale);		
+		int anni = diffAnni(parziale);
+		
+		if(ore>maxOre || anni>maxAnni)
 			return;
-			
+		
+		if(livello == this.powerList.size())
+			return;
+		
+		int clienti = sommaClienti(parziale);
+		
+		if(clienti>this.sommaClientiMigliore) {
+			sommaClientiMigliore = clienti;
+			soluzioneMigliore = new ArrayList<>(parziale);
+			return;
 		}
 		
-		if(indice==powerList.size())
-			itera(livello+1, livello+1, new ArrayList<PowerOutage>(), powerList, 0, maxOre, 0, maxAnni);
+		parziale.add(this.powerList.get(livello));
+		itera(livello+1, parziale, maxOre, maxAnni);
 		
-		for(int i = indice; i<powerList.size(); i++) {
-			
-			parziale.add(powerList.get(i));
-			
-			itera(livello, i+1, parziale, powerList, sommaClienti+powerList.get(i).getCustomers_affected(), maxOre, 
-					sommaOre+powerList.get(i).getHours(), maxAnni);
-			
-			parziale.remove(powerList.get(i));
-		
-		}	
+		parziale.remove(this.powerList.get(livello));
+		itera(livello+1, parziale, maxOre, maxAnni);
 		
 		
+	}
+
+	private int sommaClienti(List<PowerOutage> parziale) {
+		int i = 0;
+		for(PowerOutage p: parziale)
+			i+=p.getCustomers_affected();
 		
+		return i;
+	}
+	
+
+	private int diffAnni(List<PowerOutage> parziale) {
+		int d = 0;
+		if(parziale.size()>0) {
+			List<PowerOutage> lista = new ArrayList<>(parziale);
+			Collections.sort(lista, new ComparatoreAnni());
 		
+			d = lista.get(lista.size()-1).getYear()-lista.get(0).getYear();
+		}
+		return d;
+	}
+
+	private double sommaOre(List<PowerOutage> parziale) {
+		double i = 0.0;
+		for(PowerOutage p: parziale)
+			i+=p.getHours();
+		
+		return i;
 	}
 	
 	

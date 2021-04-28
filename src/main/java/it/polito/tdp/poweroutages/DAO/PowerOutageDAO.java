@@ -40,7 +40,7 @@ public class PowerOutageDAO {
 		String sql = "SELECT id, nerc_id, customers_affected, YEAR(date_event_finished) AS year, (TIMESTAMPDIFF(MINUTE, date_event_began, date_event_finished))/60 AS hours "
 				+ "FROM poweroutages "
 				+ "WHERE nerc_id=? "
-				+ "ORDER BY(year) desc";
+				+ "ORDER BY(year) asc";
 		
 		List<PowerOutage> powerList = new ArrayList<>();
 
