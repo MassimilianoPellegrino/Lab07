@@ -16,7 +16,7 @@ public class TestPowerOutagesDAO {
 			PowerOutageDAO dao = new PowerOutageDAO() ;
 			
 			//System.out.println(dao.getNercList()) ;
-			for(PowerOutage p: dao.getPowerList(8)) {
+			for(PowerOutage p: dao.getPowerList(7)) {
 				System.out.println(p);
 			}
 

@@ -7,7 +7,7 @@ public class TestModel {
 		Model model = new Model();
 		//System.out.println(model.getNercList());
 		//System.out.println(model.trovaSequenza(8, 100, 2));
-		for(PowerOutage p: model.trovaSequenza(3, 200, 4)) {
+		for(PowerOutage p: model.trovaSequenza(7, 200, 4)) {
 			System.out.println(p);
 		}
 	} 

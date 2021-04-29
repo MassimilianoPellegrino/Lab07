@@ -5,6 +5,7 @@
 package it.polito.tdp.poweroutages;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import it.polito.tdp.poweroutages.model.Model;
 import it.polito.tdp.poweroutages.model.Nerc;
@@ -43,12 +44,19 @@ public class FXMLController {
     	try {
     		int ore = Integer.parseInt(this.txtHours.getText());
     		int anni = Integer.parseInt(this.txtYears.getText());
+    		List<PowerOutage> sequenza = this.model.trovaSequenza(this.cmbNerc.getValue().getId(), ore, anni);
+    		
+    		this.txtResult.appendText("ore totali: "+this.model.sommaOre(sequenza)+"\nclienti totali: "+this.model.sommaClienti(sequenza)+"\n\n");
 
-    		for(PowerOutage p: this.model.trovaSequenza(this.cmbNerc.getValue().getId(), ore, anni)) {
+    		for(PowerOutage p: sequenza) {
     			this.txtResult.appendText(p+"\n");
     		}
+    		
     	}catch(NumberFormatException nfe) {
     		this.txtResult.setText("Inserire solamente numeri");
+    	}catch(NullPointerException npe) {
+    		this.txtResult.setText("Combinazione non valida");
+    		npe.printStackTrace();
     	}
     }
 

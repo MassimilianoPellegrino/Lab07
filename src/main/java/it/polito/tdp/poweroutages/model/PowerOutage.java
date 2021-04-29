@@ -81,8 +81,8 @@ public class PowerOutage {
 
 	@Override
 	public String toString() {
-		return "Poweroutage [id=" + id + ", nerc_id=" + nerc_id + ", customers_affected=" + customers_affected
-				+ ", year=" + year + ", hours=" + hours + "]";
+		return "id = " + id + ", nerc_id = " + nerc_id + ", customers_affected = " + customers_affected
+				+ ", year = " + year + ", hours = " + hours;
 	}
 	
 	
