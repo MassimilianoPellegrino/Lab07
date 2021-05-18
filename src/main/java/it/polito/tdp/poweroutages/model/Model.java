@@ -17,7 +17,7 @@ public class Model {
 	int maxAnni;
 	
 	public Model() {
-		podao = new PowerOutageDAO();
+		this.podao = new PowerOutageDAO();
 	}
 	 
 	public List<Nerc> getNercList() {
@@ -32,8 +32,8 @@ public class Model {
 		
 		this.maxOre=maxOre;
 		this.maxAnni=maxAnni;
-		sommaClientiMigliore = 0;
-		powerList = this.getPowerList(nerc_id);
+		this.sommaClientiMigliore = 0;
+		this.powerList = this.getPowerList(nerc_id);
 
 		itera(0, new ArrayList<PowerOutage>());
 		
@@ -59,10 +59,12 @@ public class Model {
 		if(livello == this.powerList.size())
 			return;
 		
-		if(!parziale.contains(this.powerList.get(livello))) {
-			parziale.add(this.powerList.get(livello));
+		PowerOutage po = this.powerList.get(livello);
+		
+		if(!parziale.contains(po)) {
+			parziale.add(po);
 			itera(livello+1, parziale);
-			parziale.remove(this.powerList.get(livello));	
+			parziale.remove(po);	
 		}
 		itera(livello+1, parziale);
 		
